@@ -7,6 +7,7 @@
 using namespace std;
 
 #include "node.h"
+#include "doubly_linked_list_exception.h"
 
 class DoublyLinkedList
 {
@@ -24,13 +25,15 @@ public:
     int     findMax();
     int     findMin();
     
-    string  insertFirst(int value);
-    string  insertLast(int value);
-    string  insertAfterValue(int newValue, int value);
+    void  insertFirst(int value);
+    void  insertLast(int value);
+    void  insertAfterValue(int newValue, int value);
+    void  insertAfterID(int newValue, int id);
 
-    string  deleteFirst();
-    string  deleteLast();
-    string  deleteByValue(int value);
+    void  deleteFirst();
+    void  deleteLast();
+    void  deleteByValue(int value);
+    void  deleteByID(int id);
 
     string  displayForward();
     string  displayBackward();

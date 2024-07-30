@@ -72,7 +72,7 @@ int DoublyLinkedList::findMin()
     return res;
 }
 
-string DoublyLinkedList::insertFirst(int value)
+void DoublyLinkedList::insertFirst(int value)
 {
     Node* newNode = new Node(value, nullptr, nullptr);
     if(this->isEmpty())
@@ -87,10 +87,9 @@ string DoublyLinkedList::insertFirst(int value)
         this->m_pFirstNode = newNode;
     }
     this->m_numOfElements += 1;
-    return "Item is added";
 }
 
-string DoublyLinkedList::insertLast(int value)
+void DoublyLinkedList::insertLast(int value)
 {
     Node* newNode = new Node(value, nullptr, nullptr);
     if(this->isEmpty())
@@ -105,18 +104,16 @@ string DoublyLinkedList::insertLast(int value)
         this->m_pLastNode = newNode;
     }
     this->m_numOfElements += 1;
-    return "Item is added";
 }
 
-string DoublyLinkedList::insertAfterValue(int newValue, int targetValue)
+void DoublyLinkedList::insertAfterValue(int newValue, int targetValue)
 {
-    string res = "";
     Node* searchNode = this->search(targetValue);
     if(searchNode)
     {
         Node* newNode = new Node(newValue, nullptr, nullptr);
         if(searchNode->getRight() == nullptr){
-            res = this->insertLast(newValue);
+            this->insertLast(newValue);
         }
         else
         {
@@ -126,19 +123,41 @@ string DoublyLinkedList::insertAfterValue(int newValue, int targetValue)
             newNode->setLeft(searchNode);
             newNode->setRight(nextNodeOfSeachNode);
             this->m_numOfElements += 1;
-            res = "Item is added";
         }
     }
     else
     {
-        res = "Target value is not exist";
+        throw TargetValueIsNotExist();
     }
-    return res;
 }
 
-string DoublyLinkedList::deleteFirst()
+void DoublyLinkedList::insertAfterID(int newValue, int id)
 {
-    string res = "";
+    if(id < 1 || id > this->m_numOfElements) throw IDInvalid();
+    Node* tmp = this->m_pFirstNode;
+    int cnt = 0;
+    while(cnt < id - 1)
+    {
+        tmp = tmp->getRight();
+        cnt += 1;
+    }
+    if(tmp->getRight() == nullptr){
+        this->insertLast(newValue);
+    }
+    else
+    {
+        Node* newNode = new Node(newValue, nullptr, nullptr);
+        Node* nextNodeOfCurNode = tmp->getRight();
+        tmp->setRight(newNode);
+        nextNodeOfCurNode->setLeft(newNode);
+        newNode->setLeft(tmp);
+        newNode->setRight(nextNodeOfCurNode);
+        this->m_numOfElements += 1;
+    }
+}
+
+void DoublyLinkedList::deleteFirst()
+{
     if(!this->isEmpty())
     {
         Node* tmp = this->m_pFirstNode;
@@ -154,18 +173,15 @@ string DoublyLinkedList::deleteFirst()
         }
         delete tmp;
         this->m_numOfElements -= 1;
-        res = "Item is deleted";
     }
     else
     {
-        res = "List is empty";
+        throw ListIsEmpty();
     }
-    return res;
 }
 
-string DoublyLinkedList::deleteLast()
+void DoublyLinkedList::deleteLast()
 {
-    string res = "";
     if(!this->isEmpty())
     {
         Node* tmp = this->m_pLastNode;
@@ -181,46 +197,71 @@ string DoublyLinkedList::deleteLast()
         }
         delete tmp;
         this->m_numOfElements -= 1;
-        res = "Item is deleted";
     }
     else
     {
-        res = "List is empty";
+        throw ListIsEmpty();
     }
-    return res;
 }
 
-string DoublyLinkedList::deleteByValue(int value)
+void DoublyLinkedList::deleteByValue(int value)
 {
 
-    string res = "Item isn't exist";
-    if(this->isEmpty()) res = "List is empty";
+    if(this->isEmpty()) throw ListIsEmpty();
     else
     {
         Node* tmp = this->m_pFirstNode;
+        bool isFound = false;
         while (tmp)
         {
             Node* right = tmp->getRight();
             if(tmp->getData() == value)
             {
                 if(tmp->getLeft() == nullptr)
-                    res = this->deleteFirst();
+                    this->deleteFirst();
                 else if(tmp->getRight() == nullptr)
-                    res = this->deleteLast();
+                    this->deleteLast();
                 else
                 {
                     Node* left = tmp->getLeft();
                     left->setRight(right);
                     right->setLeft(left);
                     delete tmp;
-                    res = "Item is deleted";
                 }
+                isFound = true;
             }
             tmp = right;
         }
+        if(!isFound) throw ItemNotExist();
     }
-    
-    return res;
+}
+
+void DoublyLinkedList::deleteByID(int id)
+{
+    if(id < 1 || id > this->m_numOfElements) throw IDInvalid();
+    if(this->isEmpty()) throw ListIsEmpty();
+    else
+    {
+        Node* tmp = this->m_pFirstNode;
+        int cnt = 0;
+        while(cnt < id - 1) 
+        {
+            tmp = tmp->getRight();
+            cnt += 1;
+        }
+        if(tmp->getLeft() == nullptr)
+            this->deleteFirst();
+        else if(tmp->getRight() == nullptr)
+            this->deleteLast();
+        else
+        {
+            Node* left = tmp->getLeft();
+            Node* right = tmp->getRight();
+            left->setRight(right);
+            right->setLeft(left);
+            delete tmp;
+        }
+    }
 }
 
 string DoublyLinkedList::displayForward()
@@ -228,7 +269,7 @@ string DoublyLinkedList::displayForward()
     string res = "";
     if(this->isEmpty())
     {
-        res = "List is empty";
+        throw ListIsEmpty();
     }
     else
     {
@@ -247,7 +288,7 @@ string DoublyLinkedList::displayBackward()
     string res = "";
     if(this->isEmpty())
     {
-        res = "List is empty";
+        throw ListIsEmpty();
     }
     else
     {

@@ -6,7 +6,7 @@ CXXFLAGS = -std=c++17
 TARGET = exercise4
 
 # Source files
-SRCS = main.cc node.cc doubly_linked_list.cc presentation.cc
+SRCS = main.cc node.cc doubly_linked_list.cc doubly_linked_list_app.cc
 
 # Object files
 OBJS = $(SRCS:.cc=.o)

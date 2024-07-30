@@ -2,40 +2,49 @@
 
 using namespace std;
 
+#include "dog.h"
+#include "fish.h"
 #include "pet_factory.h"
+#include "dog_factory.h"
+#include "fish_factory.h"
 
 int main()
 {
-    PetFactory* petFactory = new PetFactory();
+    
+    // PetFactory* petFactory = new PetFactory();
+    PetFactory* dogFactory = new DogFactory(1, "Bear");
+
+    PetFactory* fishFactory = new FishFactory("Salt Water");
 
     // Dog
-    Dog* pDog = petFactory->createDog("Dog", "Billy", "Land", Gender::Male, 1, "toy");
-    cout << pDog->getInfor() << "\n\n";
+    Pet* pDog = dogFactory->createPet("Dog", "Billy", "Land", Gender::Male);
+    cout << static_cast<Dog*>(pDog)->getInfor() << "\n\n";
 
     cout << "Dog's behavier:\n";
     cout << pDog->move() << '\n';
     cout << pDog->feed() << '\n';
     cout << pDog->makeSound() << "\n\n";
     
-    pDog->setFavoriteToy("shoes");
+    static_cast<Dog*>(pDog)->setFavoriteToy("shoes");
     cout << "Information of dog after changed favorite toy\n";
-    cout << pDog->getInfor() << "\n\n";
+    cout << static_cast<Dog*>(pDog)->getInfor() << "\n\n";
     delete pDog;
 
     //Fish
-    Fish* pF = petFactory->createFish("Fish", "Nemo", "Aquatic", Gender::Female, "Salt water");
-    cout << pF->getInfor() << "\n\n";
+    Pet* pFish = fishFactory->createPet("Fish", "Nemo", "Aquatic", Gender::Female);
+    cout << static_cast<Fish*>(pFish)->getInfor() << "\n\n";
     cout << "Fish's behavier:\n";
-    cout << pF->move() << '\n';
-    cout << pF->feed() << '\n';
-    cout << pF->makeSound() << "\n\n";
+    cout << pFish->move() << '\n';
+    cout << pFish->feed() << '\n';
+    cout << pFish->makeSound() << "\n\n";
 
-    pF->setWaterType("Fresh water");
+    static_cast<Fish*>(pFish)->setWaterType("Fresh water");
     cout << "Information of fish after changed water type\n";
-    cout << pF->getInfor() << '\n';
-    delete pF;
+    cout << static_cast<Fish*>(pFish)->getInfor() << '\n';
+    delete pFish;
 
-    delete petFactory;
+    delete dogFactory;
+    delete fishFactory;
 
     return 0;
 }

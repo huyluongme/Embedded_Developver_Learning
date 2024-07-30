@@ -7,11 +7,7 @@
 class PetFactory
 {
 public:
-    PetFactory(/* args */);
-    ~PetFactory();
-
-    Dog* createDog(string type, string name, string habitat, Gender gender, int trainingLevel, string favoriteToy);
-    Fish* createFish(string type, string  name, string hanitat, Gender gender, string waterType);
+    virtual Pet* createPet(string type, string name, string habitat, Gender gender) = 0;
 };
 
 #endif

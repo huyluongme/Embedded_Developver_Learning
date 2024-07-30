@@ -2,11 +2,11 @@
 
 using namespace std;
 
-#include "presentation.h"
+#include "doubly_linked_list_app.h"
 
 int main()
 {
-    Presentation presentation;
-    presentation.run();
+    DoublyLinkedListApp application;
+    application.run();
     return 0;
 }

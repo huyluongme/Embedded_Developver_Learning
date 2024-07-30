@@ -6,7 +6,7 @@ CXXFLAGS = -std=c++17
 TARGET = exercise2
 
 # Source files
-SRCS = main.cc pet.cc pet_factory.cc dog.cc fish.cc
+SRCS = main.cc pet.cc pet_factory.cc dog.cc fish.cc dog_factory.cc fish_factory.cc
 
 # Object files
 OBJS = $(SRCS:.cc=.o)
